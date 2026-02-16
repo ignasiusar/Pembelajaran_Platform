@@ -1,0 +1,153 @@
+/* IMPORT FONT MODERN */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #020617);
+    color: #e2e8f0;
+    line-height: 1.7;
+}
+
+/* HEADER */
+header {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(12px);
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    margin-top: 8px;
+    color: #94a3b8;
+}
+
+/* NAVIGATION */
+nav ul {
+    list-style: none;
+    margin-top: 20px;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #cbd5f5;
+    font-weight: 500;
+    transition: 0.3s;
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+nav ul li a:hover {
+    background: linear-gradient(90deg, #38bdf8, #6366f1);
+    color: white;
+}
+
+/* SECTION */
+section {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+}
+
+/* HOVER EFFECT */
+section:hover {
+    transform: translateY(-5px);
+    border: 1px solid rgba(99,102,241,0.4);
+    box-shadow: 0 10px 30px rgba(99,102,241,0.15);
+}
+
+/* HEADINGS */
+h2 {
+    font-size: 26px;
+    margin-bottom: 15px;
+    color: #38bdf8;
+}
+
+h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #818cf8;
+}
+
+/* PARAGRAPH */
+p {
+    margin-bottom: 15px;
+    color: #cbd5e1;
+}
+
+/* LIST */
+ul {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+ul li {
+    margin-bottom: 8px;
+}
+
+/* CONTACT */
+#contact p {
+    font-size: 16px;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 25px;
+    margin-top: 40px;
+    color: #64748b;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* SCROLL SMOOTH */
+html {
+    scroll-behavior: smooth;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+    header h1 {
+        font-size: 24px;
+    }
+
+    nav ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    section {
+        margin: 20px;
+        padding: 20px;
+    }
+
+}
