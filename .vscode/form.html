@@ -3,67 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir Pendaftaran Pasien Rumah Sakit </title>
-    <link rel="stylesheet" href="style.css">
+    <title>Formulir Pendaftaran Pasien Rumah Sakit</title>
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* CSS Apple Style - FIXED */
+        :root {
+            --apple-blue: #0071e3;
+            --bg-color: #f5f5f7;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+            width: 100%;
+            max-width: 420px;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+            color: #1d1d1f;
+        }
+        .form-group { margin-bottom: 20px; }
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #86868b;
+            margin-bottom: 8px;
+            margin-left: 4px;
+            text-transform: uppercase;
+        }
+        input[type="text"], input[type="number"], input[type="email"], select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--apple-blue);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+        #gejalaContainer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            background: #fbfbfb;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #d2d2d7;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--apple-blue);
+        }
+        button {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--apple-blue);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+        button:hover { background-color: #0066cc; }
+        button:active { transform: scale(0.98); }
+        .error-msg {
+            color: #ff3b30;
+            font-size: 11px;
+            margin-top: 4px;
+            display: block;
+        }
+        /* SweetAlert Apple Theme */
+        .swal2-popup {
+            border-radius: 20px !important;
+            font-family: -apple-system !important;
+        }
+        .swal2-title {
+            font-weight: 600 !important;
+            color: #1d1d1f !important;
+        }
+        .swal2-confirm {
+            background-color: var(--apple-blue) !important;
+            border-radius: 12px !important;
+            padding: 12px 24px !important;
+            font-weight: 600 !important;
+        }
+    </style>
 </head>
 <body>
-    <h1> Form Pendaftaran Pasien Baru Rumah Sakit</h1>
+    <div class="container">
+        <h1>Form Pendaftaran Pasien Baru</h1>
+        <form id="formPasien">
+            <!-- Input Text -->
+            <div class="form-group">
+                <label for="nama">Nama Lengkap</label>
+                <input type="text" id="nama" placeholder="Masukkan nama lengkap pasien" required>
+            </div>
 
-    <!-- Input Text -->
-     <label for="nama">Nama Lengkap: </label>
-     <input type="text" id="nama" placeholder=" Masukan Nama Lengkap pasien " required>
+            <!-- Input Number -->
+            <div class="form-group">
+                <label for="umur">Umur</label>
+                <input type="number" id="umur" min="1" max="120" step="1" placeholder="0" required>
+                <span id="errorUmur" class="error-msg"></span>
+            </div>
 
-     <!-- input number -->
-        <label for="umur"> Umur: </label>
-        <input type="number" id="umur" placeholder=" Masukan Umur Pasien " min="1" max="120" step="1" required>
-        <br><br>
-        <span id="errorUmur" style="color: red;"></span><br><br>
+            <!-- Input Email -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="contoh@email.com" required>
+                <span id="errorEmail" class="error-msg"></span>
+            </div>
 
-    <!-- Input Email -->
-    <label for="email"> Email: </label>
-    <input type="email" id="email" placeholder=" Masukan Email Pasien " required>
-    <span id="errorEmail" style="color: red;"></span><br><br>
+            <!-- Radio -->
+            <div class="form-group">
+                <label>Jenis Kelamin</label>
+                <input type="radio" id="laki-laki" name="jenisKelamin" value="Laki-laki" required>
+                <label for="laki-laki" style="display: inline; text-transform: none; margin-left: 8px;">Laki-laki</label>
+                <input type="radio" id="perempuan" name="jenisKelamin" value="Perempuan" style="margin-left: 20px;" required>
+                <label for="perempuan" style="display: inline; text-transform: none;">Perempuan</label>
+            </div>
 
-    <!-- Input Radio -->
-<label>Jenis Kelamin: </label>
-<input type="radio" id="laki-laki" name="jenisKelamin" value="Laki-laki" required>
-<label for="laki-laki">Laki-laki</label>    
-<input type="radio" id="perempuan" name="jenisKelamin" value="Perempuan" required>
-<label for="perempuan">Perempuan</label><br><br>
+            <!-- Checkbox -->
+            <div class="form-group">
+                <label>Keluhan</label>
+                <div id="gejalaContainer"></div>
+            </div>
 
-    <!-- Input Checkbox -->
-    <label>Keluhan: </label>
-    <div id="gejalaContainer">
+            <!-- Select -->
+            <div class="form-group">
+                <label for="poli">Pilih Poli Tujuan</label>
+                <select id="poli" required>
+                    <option value="">--Pilih Poli--</option>
+                </select>
+            </div>
 
-    </div><br>
-  
-
-    <!-- Input Select -->
-    <label for="poli">Pilih Poli Tujuan: </label>
-    <select id="poli" required>
-    <option value="">--Pilih Poli--</option>
-
-    </select><br><br>
-
-    <!-- Button Submit -->
-    <button type="submit">Daftar</button>
-
-        <!-- Output Hasil -->
-    <div id="output" style="border: 1px solid #ccc; padding: 10px; margin-top: 20px; display: none;"></div>
+            <!-- Button -->
+            <button type="submit">Daftar Sekarang</button>
+        </form>
+    </div>
 
     <script>
-    //    Data Master (Kalau mau tambah tinggal tambah dalam kurung)
-        const keluhanOptions = ["Demam", "Batuk", "Sakit Kepala"];
+        // Data Master (Softcode!)
+        const keluhanOptions = ["Demam", "Batuk", "Sakit Kepala", "Pusing", "Mual"];
         const poliOptions = ["Poli Umum", "Poli Anak", "Poli Gigi", "Poli Mata"];
 
+        // Inisialisasi Form (Softcode generator)
         function inisialisasiForm() {
-            // Render Checkbox Gejala 
             const gejalaContainer = document.getElementById("gejalaContainer");
             keluhanOptions.forEach(item => {
                 const div = document.createElement("div");
+                div.className = "checkbox-item";
                 div.innerHTML = `
                     <input type="checkbox" id="chk_${item}" name="keluhan" value="${item}">
-                    <label for="${item}">${item}</label>
+                    <label for="chk_${item}">${item}</label>
                 `;
                 gejalaContainer.appendChild(div);
             });
@@ -71,61 +195,84 @@
             const poliSelect = document.getElementById("poli");
             poliOptions.forEach(poli => {
                 const option = document.createElement("option");
-                option.value = poli;
+                option.value = poli.toLowerCase().replace("poli ", "");
                 option.textContent = poli;
                 poliSelect.appendChild(option);
             });
         }
-// Fungsi Validasi
-function validasiInput() {
-    const umur = document.getElementById("umur").value;
-    const email = document.getElementById("email").value;
-    const errorUmur = document.getElementById("errorUmur");
-    const errorEmail = document.getElementById("errorEmail");
-    let isValid = true;
 
-    // cek umur
-    if(umur < 1 || umur > 120) {
-        errorUmur.textContent = "Umur harus antara 1 dan 120 tahun.";
-        isValid = false;
-    } else {
-        errorUmur.textContent = "";
-    }
+        // Validasi
+        function validasiInput() {
+            const umur = parseInt(document.getElementById("umur").value);
+            const email = document.getElementById("email").value;
+            const errorUmur = document.getElementById("errorUmur");
+            const errorEmail = document.getElementById("errorEmail");
+            let isValid = true;
 
-    // cek email regex sederhana
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(!emailPattern.test(email)) {
-        errorEmail.textContent = "Format email tidak valid.";
-        isValid = false;
-    } else {
-        errorEmail.textContent = "";
-    }
-    return isValid;
-}
-// event handler
-document.getElementById('formPasien').addEventListener('submit', function(e) {
-    e.preventDefault(); //biar ga reaload
+            if (umur < 1 || umur > 120) {
+                errorUmur.textContent = "Umur harus antara 1-120 tahun.";
+                isValid = false;
+            } else {
+                errorUmur.textContent = "";
+            }
 
-    if(!validasiInput()) return;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                errorEmail.textContent = "Format email tidak valid.";
+                isValid = false;
+            } else {
+                errorEmail.textContent = "";
+            }
+            return isValid;
+        }
 
-    // ambil data keluhan yang dicentang
-    const keluhanTerpilih = Array.from(document.querySelectorAll('input[name="keluhan"]:checked')).map(cb => cb.value);
+        // Event Submit
+        document.getElementById('formPasien').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-    // tampilkan hasil
-    const output = document.getElementById("output");
-    outpuyt.style.display = "block";
-    output.innerHTML = `
-        <h3>Data Pasien:</h3>
-        <p><strong>Nama:</strong> ${document.getElementById("nama").value}</p>
-        <p><strong>Umur:</strong> ${document.getElementById("umur").value} tahun</p>
-        <p><strong>Email:</strong> ${document.getElementById("email").value}</p>
-        <p><strong>Jenis Kelamin:</strong> ${document.querySelector('input[name="jenisKelamin"]:checked').value}</p>
-        <p><strong>Keluhan:</strong> ${keluhanTerpilih.join(", ")}</p>
-        <p><strong>Poli Tujuan:</strong> ${document.getElementById("poli").value}</p>
-    `;
-    output.scrollIntoView({ behavior: "smooth" });
-});
-document.addEventListener("DOMContentLoaded", inisialisasiForm);
-</script>
+            if (!validasiInput()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Cek umur atau emailnya ya!',
+                    confirmButtonColor: '#0071e3'
+                });
+                return;
+            }
 
+            // Ambil data
+            const nama = document.getElementById("nama").value;
+            const umur = document.getElementById("umur").value;
+            const email = document.getElementById("email").value;
+            const gender = document.querySelector('input[name="jenisKelamin"]:checked')?.value || '';
+            const keluhan = Array.from(document.querySelectorAll('input[name="keluhan"]:checked')).map(cb => cb.value);
+            const poli = document.getElementById("poli").value;
 
+            // SweetAlert SUKSES ✅
+            Swal.fire({
+                title: '✅ Pendaftaran Berhasil!',
+                html: `
+                    <div style="text-align: left;">
+                        <p><strong>Nama:</strong> ${nama}</p>
+                        <p><strong>Umur:</strong> ${umur} tahun</p>
+                        <p><strong>Email:</strong> ${email}</p>
+                        <p><strong>Jenis Kelamin:</strong> ${gender}</p>
+                        <p><strong>Keluhan:</strong> ${keluhan.join(', ') || 'Tidak ada'}</p>
+                        <p><strong>Poli:</strong> ${poli}</p>
+                        <p style="color: #34c759;">No. Antrian: <strong>001</strong></p>
+                    </div>
+                `,
+                icon: 'success',
+                confirmButtonText: 'OK!',
+                confirmButtonColor: '#0071e3',
+                backdrop: 'rgba(0,0,0,0.4)'
+            }).then(() => {
+                document.getElementById('formPasien').reset();
+            });
+        });
+
+        // Init
+        document.addEventListener("DOMContentLoaded", inisialisasiForm);
+    </script>
+</body>
+</html>
