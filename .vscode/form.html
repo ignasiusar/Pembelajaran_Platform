@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Pendaftaran Pasien Rumah Sakit </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1> Form Pendaftaran Pasien Baru Rumah Sakit</h1>
+
+    <!-- Input Text -->
+     <label for="nama">Nama Lengkap: </label>
+     <input type="text" id="nama" placeholder=" Masukan Nama Lengkap pasien " required>
+
+     <!-- input number -->
+        <label for="umur"> Umur: </label>
+        <input type="number" id="umur" placeholder=" Masukan Umur Pasien " min="1" max="120" step="1" required>
+        <br><br>
+        <span id="errorUmur" style="color: red;"></span><br><br>
+
+    <!-- Input Email -->
+    <label for="email"> Email: </label>
+    <input type="email" id="email" placeholder=" Masukan Email Pasien " required>
+    <span id="errorEmail" style="color: red;"></span><br><br>
+
+    <!-- Input Radio -->
+<label>Jenis Kelamin: </label>
+<input type="radio" id="laki-laki" name="jenisKelamin" value="Laki-laki" required>
+<label for="laki-laki">Laki-laki</label>    
+<input type="radio" id="perempuan" name="jenisKelamin" value="Perempuan" required>
+<label for="perempuan">Perempuan</label><br><br>
+
+    <!-- Input Checkbox -->
+    <label>Keluhan: </label>
+    <div id="gejalaContainer">
+
+    </div><br>
+  
+
+    <!-- Input Select -->
+    <label for="poli">Pilih Poli Tujuan: </label>
+    <select id="poli" required>
+    <option value="">--Pilih Poli--</option>
+
+    </select><br><br>
+
+    <!-- Button Submit -->
+    <button type="submit">Daftar</button>
+
+        <!-- Output Hasil -->
+    <div id="output" style="border: 1px solid #ccc; padding: 10px; margin-top: 20px; display: none;"></div>
+
+    <script>
+    //    Data Master (Kalau mau tambah tinggal tambah dalam kurung)
+        const keluhanOptions = ["Demam", "Batuk", "Sakit Kepala"];
+        const poliOptions = ["Poli Umum", "Poli Anak", "Poli Gigi", "Poli Mata"];
+
+        function inisialisasiForm() {
+            // Render Checkbox Gejala 
+            const gejalaContainer = document.getElementById("gejalaContainer");
+            keluhanOptions.forEach(item => {
+                const div = document.createElement("div");
+                div.innerHTML = `
+                    <input type="checkbox" id="chk_${item}" name="keluhan" value="${item}">
+                    <label for="${item}">${item}</label>
+                `;
+                gejalaContainer.appendChild(div);
+            });
+
+            const poliSelect = document.getElementById("poli");
+            poliOptions.forEach(poli => {
+                const option = document.createElement("option");
+                option.value = poli;
+                option.textContent = poli;
+                poliSelect.appendChild(option);
+            });
+        }
+// Fungsi Validasi
+function validasiInput() {
+    const umur = document.getElementById("umur").value;
+    const email = document.getElementById("email").value;
+    const errorUmur = document.getElementById("errorUmur");
+    const errorEmail = document.getElementById("errorEmail");
+    let isValid = true;
+
+    // cek umur
+    if(umur < 1 || umur > 120) {
+        errorUmur.textContent = "Umur harus antara 1 dan 120 tahun.";
+        isValid = false;
+    } else {
+        errorUmur.textContent = "";
+    }
+
+    // cek email regex sederhana
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailPattern.test(email)) {
+        errorEmail.textContent = "Format email tidak valid.";
+        isValid = false;
+    } else {
+        errorEmail.textContent = "";
+    }
+    return isValid;
+}
+// event handler
+document.getElementById('formPasien').addEventListener('submit', function(e) {
+    e.preventDefault(); //biar ga reaload
+
+    if(!validasiInput()) return;
+
+    // ambil data keluhan yang dicentang
+    const keluhanTerpilih = Array.from(document.querySelectorAll('input[name="keluhan"]:checked')).map(cb => cb.value);
+
+    // tampilkan hasil
+    const output = document.getElementById("output");
+    outpuyt.style.display = "block";
+    output.innerHTML = `
+        <h3>Data Pasien:</h3>
+        <p><strong>Nama:</strong> ${document.getElementById("nama").value}</p>
+        <p><strong>Umur:</strong> ${document.getElementById("umur").value} tahun</p>
+        <p><strong>Email:</strong> ${document.getElementById("email").value}</p>
+        <p><strong>Jenis Kelamin:</strong> ${document.querySelector('input[name="jenisKelamin"]:checked').value}</p>
+        <p><strong>Keluhan:</strong> ${keluhanTerpilih.join(", ")}</p>
+        <p><strong>Poli Tujuan:</strong> ${document.getElementById("poli").value}</p>
+    `;
+    output.scrollIntoView({ behavior: "smooth" });
+});
+document.addEventListener("DOMContentLoaded", inisialisasiForm);
+</script>
+
+
